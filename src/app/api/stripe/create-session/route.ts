@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserFromToken } from '@/lib/auth';
-import { createCheckoutSession, createStripeCustomer, STRIPE_PLANS } from '@/lib/stripe';
+import { createCheckoutSession, createStripeCustomer, STRIPE_PLANS } from '../../../../../lib/stripe';
 import { db } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
