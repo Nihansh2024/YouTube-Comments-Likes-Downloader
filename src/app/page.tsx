@@ -38,9 +38,13 @@ interface VideoInfo {
 // View types
 type ViewType = 'landing' | 'login' | 'signup' | 'dashboard' | 'admin';
 
+// Modal types for footer links
+type ModalType = 'blog' | 'api-docs' | 'help-center' | 'contact' | 'privacy' | 'terms' | 'cookies' | 'gdpr' | null;
+
 export default function CommentFlowApp() {
   const [currentView, setCurrentView] = useState<ViewType>('landing');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState<ModalType>(null);
   const { user, isAuthenticated, isLoading, checkAuth, logout } = useAuthStore();
 
   useEffect(() => {
@@ -171,6 +175,344 @@ export default function CommentFlowApp() {
       )}
     </nav>
   );
+
+  // Info Modal Component
+  const InfoModal = () => {
+    if (!activeModal) return null;
+
+    const modalContent: Record<Exclude<ModalType, null>, { title: string; icon: React.ReactNode; content: React.ReactNode }> = {
+      'blog': {
+        title: 'Blog',
+        icon: <FileText className="w-6 h-6" />,
+        content: (
+          <div className="space-y-6">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Latest Articles</h3>
+              <div className="space-y-4">
+                <div className="border-l-4 border-violet-500 pl-4">
+                  <h4 className="font-semibold">How to Analyze YouTube Comments for Better Engagement</h4>
+                  <p className="text-sm text-muted-foreground mt-1">Learn strategies to understand your audience through comment analysis.</p>
+                  <span className="text-xs text-violet-600">Jan 15, 2024 • 8 min read</span>
+                </div>
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-semibold">Top 10 Uses for Exported Comment Data</h4>
+                  <p className="text-sm text-muted-foreground mt-1">Discover creative ways to leverage comment data for your business.</p>
+                  <span className="text-xs text-violet-600">Jan 10, 2024 • 6 min read</span>
+                </div>
+                <div className="border-l-4 border-pink-500 pl-4">
+                  <h4 className="font-semibold">Instagram Comment Marketing: Complete Guide 2024</h4>
+                  <p className="text-sm text-muted-foreground mt-1">Master Instagram engagement with our comprehensive guide.</p>
+                  <span className="text-xs text-violet-600">Jan 5, 2024 • 12 min read</span>
+                </div>
+              </div>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Subscribe to Our Newsletter</h3>
+              <p className="text-sm text-muted-foreground mb-4">Get the latest tips, tutorials, and updates delivered to your inbox.</p>
+              <div className="flex gap-2">
+                <input type="email" placeholder="Enter your email" className="flex-1 px-4 py-2 input-3d rounded-lg" />
+                <Button className="btn-3d">Subscribe</Button>
+              </div>
+            </div>
+          </div>
+        )
+      },
+      'api-docs': {
+        title: 'API Documentation',
+        icon: <Database className="w-6 h-6" />,
+        content: (
+          <div className="space-y-6">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Getting Started</h3>
+              <p className="text-sm text-muted-foreground mb-4">CommentFlow offers a powerful API for developers to integrate comment extraction into their applications.</p>
+              <div className="bg-muted/50 rounded-lg p-4 font-mono text-sm">
+                <div className="text-green-600">{'// Fetch YouTube Comments'}</div>
+                <div className="text-muted-foreground">{'POST /api/youtube/fetch'}</div>
+                <div className="mt-2 text-blue-600">{'{'}</div>
+                <div className="pl-4">{'"videoUrl": "https://youtube.com/watch?v=..."'}</div>
+                <div className="text-blue-600">{'}'}</div>
+              </div>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Available Endpoints</h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                  <Badge className="bg-green-500 text-white">POST</Badge>
+                  <code className="text-sm">/api/youtube/fetch</code>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                  <Badge className="bg-blue-500 text-white">POST</Badge>
+                  <code className="text-sm">/api/youtube/download</code>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                  <Badge className="bg-green-500 text-white">POST</Badge>
+                  <code className="text-sm">/api/instagram/fetch</code>
+                </div>
+                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                  <Badge className="bg-blue-500 text-white">POST</Badge>
+                  <code className="text-sm">/api/instagram/download</code>
+                </div>
+              </div>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Rate Limits</h3>
+              <p className="text-sm text-muted-foreground">Free tier: 100 requests/day. Contact us for higher limits.</p>
+            </div>
+          </div>
+        )
+      },
+      'help-center': {
+        title: 'Help Center',
+        icon: <Shield className="w-6 h-6" />,
+        content: (
+          <div className="space-y-6">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Frequently Asked Questions</h3>
+              <div className="space-y-4">
+                {[
+                  { q: 'How do I download YouTube comments?', a: 'Simply paste a YouTube URL, click "Fetch Comments", then download as CSV or Excel.' },
+                  { q: 'Is CommentFlow really free?', a: 'Yes! CommentFlow is 100% free with unlimited downloads.' },
+                  { q: 'Can I download Instagram comments?', a: 'Yes! Switch to the Instagram tab and paste any Instagram post URL.' },
+                  { q: 'What formats are supported?', a: 'We support CSV and Excel (XLSX) formats for export.' },
+                ].map((item, i) => (
+                  <div key={i} className="border-b border-border pb-3 last:border-0">
+                    <h4 className="font-semibold text-primary">{item.q}</h4>
+                    <p className="text-sm text-muted-foreground mt-1">{item.a}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Video Tutorials</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-4 bg-muted/30 rounded-lg text-center">
+                  <Play className="w-8 h-8 mx-auto mb-2 text-violet-500" />
+                  <span className="text-sm font-medium">Getting Started</span>
+                </div>
+                <div className="p-4 bg-muted/30 rounded-lg text-center">
+                  <Play className="w-8 h-8 mx-auto mb-2 text-purple-500" />
+                  <span className="text-sm font-medium">Advanced Features</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      },
+      'contact': {
+        title: 'Contact Us',
+        icon: <Users className="w-6 h-6" />,
+        content: (
+          <div className="space-y-6">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Get in Touch</h3>
+              <p className="text-sm text-muted-foreground mb-4">Have questions or feedback? We'd love to hear from you!</p>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium">Name</label>
+                  <input type="text" placeholder="Your name" className="w-full mt-1 px-4 py-2 input-3d rounded-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Email</label>
+                  <input type="email" placeholder="your@email.com" className="w-full mt-1 px-4 py-2 input-3d rounded-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">Message</label>
+                  <textarea placeholder="How can we help?" rows={4} className="w-full mt-1 px-4 py-2 input-3d rounded-lg resize-none" />
+                </div>
+                <Button className="w-full btn-3d">Send Message</Button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="card-3d glass-card p-4 text-center">
+                <Globe className="w-6 h-6 mx-auto mb-2 text-violet-500" />
+                <span className="text-sm font-medium">Support</span>
+                <p className="text-xs text-muted-foreground mt-1">support@commentflow.io</p>
+              </div>
+              <div className="card-3d glass-card p-4 text-center">
+                <Clock className="w-6 h-6 mx-auto mb-2 text-purple-500" />
+                <span className="text-sm font-medium">Response Time</span>
+                <p className="text-xs text-muted-foreground mt-1">Within 24 hours</p>
+              </div>
+            </div>
+          </div>
+        )
+      },
+      'privacy': {
+        title: 'Privacy Policy',
+        icon: <Shield className="w-6 h-6" />,
+        content: (
+          <div className="space-y-4 max-h-96 overflow-y-auto">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Data Collection</h3>
+              <p className="text-sm text-muted-foreground">We collect minimal data necessary to provide our services:</p>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <li>• Email address (for account creation)</li>
+                <li>• Usage statistics (download counts, preferences)</li>
+                <li>• API keys (for YouTube/Instagram integration)</li>
+              </ul>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">How We Use Your Data</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• Provide comment extraction services</li>
+                <li>• Improve user experience</li>
+                <li>• Send important notifications</li>
+                <li>• Prevent abuse and ensure security</li>
+              </ul>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Data Security</h3>
+              <p className="text-sm text-muted-foreground">We implement industry-standard security measures to protect your data, including encryption, secure servers, and regular security audits.</p>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Your Rights</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• Access your personal data</li>
+                <li>• Request data deletion</li>
+                <li>• Export your data</li>
+                <li>• Opt-out of communications</li>
+              </ul>
+            </div>
+          </div>
+        )
+      },
+      'terms': {
+        title: 'Terms of Service',
+        icon: <FileText className="w-6 h-6" />,
+        content: (
+          <div className="space-y-4 max-h-96 overflow-y-auto">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">1. Acceptance of Terms</h3>
+              <p className="text-sm text-muted-foreground">By using CommentFlow, you agree to these terms. If you disagree with any part, you may not access our service.</p>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">2. Use License</h3>
+              <p className="text-sm text-muted-foreground">Permission is granted to temporarily use CommentFlow for personal or commercial purposes. This is the grant of a license, not a transfer of title.</p>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">3. User Responsibilities</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• Use the service lawfully</li>
+                <li>• Respect YouTube and Instagram terms</li>
+                <li>• Do not attempt to overload our servers</li>
+                <li>• Do not use for spam or harassment</li>
+              </ul>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">4. Disclaimer</h3>
+              <p className="text-sm text-muted-foreground">CommentFlow is provided "as is" without warranties. We are not liable for any damages arising from the use of our service.</p>
+            </div>
+          </div>
+        )
+      },
+      'cookies': {
+        title: 'Cookie Policy',
+        icon: <Settings className="w-6 h-6" />,
+        content: (
+          <div className="space-y-4">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">What Are Cookies?</h3>
+              <p className="text-sm text-muted-foreground">Cookies are small text files stored on your device that help us provide a better experience.</p>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Cookies We Use</h3>
+              <div className="space-y-3 mt-3">
+                <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                  <div>
+                    <span className="font-medium text-sm">auth-token</span>
+                    <p className="text-xs text-muted-foreground">Keeps you logged in</p>
+                  </div>
+                  <Badge variant="outline">Essential</Badge>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                  <div>
+                    <span className="font-medium text-sm">preferences</span>
+                    <p className="text-xs text-muted-foreground">Saves your settings</p>
+                  </div>
+                  <Badge variant="outline">Functional</Badge>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
+                  <div>
+                    <span className="font-medium text-sm">analytics</span>
+                    <p className="text-xs text-muted-foreground">Helps us improve</p>
+                  </div>
+                  <Badge variant="outline">Analytics</Badge>
+                </div>
+              </div>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Managing Cookies</h3>
+              <p className="text-sm text-muted-foreground">You can disable cookies in your browser settings. Note that some features may not work properly without essential cookies.</p>
+            </div>
+          </div>
+        )
+      },
+      'gdpr': {
+        title: 'GDPR Compliance',
+        icon: <Globe className="w-6 h-6" />,
+        content: (
+          <div className="space-y-4">
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Your Rights Under GDPR</h3>
+              <p className="text-sm text-muted-foreground mb-4">As a EU resident, you have the following rights:</p>
+              <div className="grid grid-cols-2 gap-3">
+                {['Right to Access', 'Right to Rectification', 'Right to Erasure', 'Right to Portability', 'Right to Restrict', 'Right to Object'].map((right, i) => (
+                  <div key={i} className="flex items-center gap-2 p-3 bg-muted/30 rounded-lg">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span className="text-sm">{right}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Data Processing</h3>
+              <p className="text-sm text-muted-foreground">We process your data based on:</p>
+              <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <li>• Your consent</li>
+                <li>• Contractual necessity</li>
+                <li>• Legitimate business interests</li>
+                <li>• Legal obligations</li>
+              </ul>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Data Retention</h3>
+              <p className="text-sm text-muted-foreground">We retain your data only as long as necessary. You can request deletion at any time by contacting us or using your account settings.</p>
+            </div>
+            <div className="card-3d glass-card p-6">
+              <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Data Transfers</h3>
+              <p className="text-sm text-muted-foreground">Your data may be processed outside the EEA. We ensure appropriate safeguards are in place.</p>
+            </div>
+          </div>
+        )
+      }
+    };
+
+    const current = modalContent[activeModal];
+
+    return (
+      <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setActiveModal(null)}>
+        <div 
+          className="w-full max-w-2xl max-h-[85vh] overflow-hidden bg-background rounded-2xl shadow-2xl border border-border animate-fade-in-up"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="sticky top-0 bg-background/95 backdrop-blur-sm border-b border-border p-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg icon-gradient-purple flex items-center justify-center text-white">
+                {current.icon}
+              </div>
+              <h2 className="text-xl font-bold gradient-text-vibrant">{current.title}</h2>
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => setActiveModal(null)}>
+              <X className="w-5 h-5" />
+            </Button>
+          </div>
+          <div className="p-6 overflow-y-auto max-h-[calc(85vh-80px)]">
+            {current.content}
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   // Landing Page
   const LandingPage = () => (
@@ -620,19 +962,19 @@ export default function CommentFlowApp() {
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">API Documentation</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Contact Us</a></li>
+                <li><button onClick={() => setActiveModal('blog')} className="hover:text-foreground transition-colors text-left">Blog</button></li>
+                <li><button onClick={() => setActiveModal('api-docs')} className="hover:text-foreground transition-colors text-left">API Documentation</button></li>
+                <li><button onClick={() => setActiveModal('help-center')} className="hover:text-foreground transition-colors text-left">Help Center</button></li>
+                <li><button onClick={() => setActiveModal('contact')} className="hover:text-foreground transition-colors text-left">Contact Us</button></li>
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Terms of Service</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">Cookie Policy</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors">GDPR</a></li>
+                <li><button onClick={() => setActiveModal('privacy')} className="hover:text-foreground transition-colors text-left">Privacy Policy</button></li>
+                <li><button onClick={() => setActiveModal('terms')} className="hover:text-foreground transition-colors text-left">Terms of Service</button></li>
+                <li><button onClick={() => setActiveModal('cookies')} className="hover:text-foreground transition-colors text-left">Cookie Policy</button></li>
+                <li><button onClick={() => setActiveModal('gdpr')} className="hover:text-foreground transition-colors text-left">GDPR</button></li>
               </ul>
             </div>
           </div>
@@ -1447,6 +1789,7 @@ export default function CommentFlowApp() {
     <main className="min-h-screen flex flex-col">
       <Navigation />
       <div className="flex-1">{renderView()}</div>
+      <InfoModal />
     </main>
   );
 }
