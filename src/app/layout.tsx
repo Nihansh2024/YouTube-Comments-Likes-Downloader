@@ -165,6 +165,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="canonical" href="https://commentflow.app" />
+        <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#7c3aed" />
         <script
           type="application/ld+json"
