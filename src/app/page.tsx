@@ -14,7 +14,8 @@ import {
   Youtube, Download, Search, Star, Zap, Shield, Globe, ChevronRight, 
   FileSpreadsheet, FileText, Play, Users, ArrowRight, Menu, X,
   LogOut, BarChart3, Crown, Check, Clock, TrendingUp, MessageSquare,
-  Database, Settings, Sparkles, Target, Award, UserCheck, Instagram
+  Database, Settings, Sparkles, Target, Award, UserCheck, Instagram,
+  Facebook, Linkedin, Twitter
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { toast } from 'sonner';
