@@ -1453,9 +1453,17 @@ if (platform === 'twitter') endpoint = '/api/twitter/download';
               <div className="flex-1 relative">
                 <input
                   type="text"
-                  placeholder={platform === 'youtube' 
-                    ? 'https://www.youtube.com/watch?v=...' 
-                    : 'https://www.instagram.com/p/...'}
+                 placeholder={
+ platform === "youtube"
+  ? "https://www.youtube.com/watch?v=..."
+  : platform === "instagram"
+  ? "https://www.instagram.com/p/..."
+  : platform === "facebook"
+  ? "https://www.facebook.com/post/..."
+  : platform === "linkedin"
+  ? "https://www.linkedin.com/posts/..."
+  : "https://twitter.com/status/..."
+}
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                   className="w-full px-4 py-3 input-3d text-base"
