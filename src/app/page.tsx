@@ -1408,6 +1408,29 @@ if (platform === 'twitter') endpoint = '/api/twitter/download';
               <Instagram className="w-4 h-4" />
               Instagram
             </Button>
+              <Button
+    variant={platform === 'facebook' ? 'default' : 'outline'}
+    onClick={() => { setPlatform('facebook'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
+    className={`flex items-center gap-2 ${platform === 'facebook' ? 'btn-3d' : ''}`}
+  >
+    Facebook
+  </Button>
+
+  <Button
+    variant={platform === 'linkedin' ? 'default' : 'outline'}
+    onClick={() => { setPlatform('linkedin'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
+    className={`flex items-center gap-2 ${platform === 'linkedin' ? 'btn-3d' : ''}`}
+  >
+    LinkedIn
+  </Button>
+
+  <Button
+    variant={platform === 'twitter' ? 'default' : 'outline'}
+    onClick={() => { setPlatform('twitter'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
+    className={`flex items-center gap-2 ${platform === 'twitter' ? 'btn-3d' : ''}`}
+  >
+    Twitter
+  </Button>
           </div>
 
           {/* Main Content Card */}
