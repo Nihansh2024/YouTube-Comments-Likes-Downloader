@@ -1183,7 +1183,7 @@ export default function CommentFlowApp() {
 
   // Dashboard Page
   const DashboardPage = () => {
-    const [platform, setPlatform] = useState<'youtube' | 'instagram'>('youtube');
+    const [platform, setPlatform] = useState<'youtube' | 'instagram' | 'facebook' | 'linkedin' | 'twitter'>('youtube');
     const [videoUrl, setVideoUrl] = useState('');
     const [comments, setComments] = useState<Comment[]>([]);
     const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
@@ -1217,7 +1217,13 @@ export default function CommentFlowApp() {
       setVideoInfo(null);
 
       try {
-        const endpoint = platform === 'youtube' ? '/api/youtube/fetch' : '/api/instagram/fetch';
+        let endpoint = '';
+
+if (platform === 'youtube') endpoint = '/api/youtube/fetch';
+if (platform === 'instagram') endpoint = '/api/instagram/fetch';
+if (platform === 'facebook') endpoint = '/api/facebook/fetch';
+if (platform === 'linkedin') endpoint = '/api/linkedin/fetch';
+if (platform === 'twitter') endpoint = '/api/twitter/fetch';
         const bodyKey = platform === 'youtube' ? 'videoUrl' : 'postUrl';
         
         const response = await fetch(endpoint, {
@@ -1250,7 +1256,13 @@ export default function CommentFlowApp() {
       }
 
       try {
-        const endpoint = platform === 'youtube' ? '/api/youtube/download' : '/api/instagram/download';
+        let endpoint = '';
+
+if (platform === 'youtube') endpoint = '/api/youtube/download';
+if (platform === 'instagram') endpoint = '/api/instagram/download';
+if (platform === 'facebook') endpoint = '/api/facebook/download';
+if (platform === 'linkedin') endpoint = '/api/linkedin/download';
+if (platform === 'twitter') endpoint = '/api/twitter/download';
         
         const response = await fetch(endpoint, {
           method: 'POST',
