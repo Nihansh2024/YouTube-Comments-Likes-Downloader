@@ -1224,18 +1224,19 @@ if (platform === 'instagram') endpoint = '/api/instagram/fetch';
 if (platform === 'facebook') endpoint = '/api/facebook/fetch';
 if (platform === 'linkedin') endpoint = '/api/linkedin/fetch';
 if (platform === 'twitter') endpoint = '/api/twitter/fetch';
-        let bodyKey = '';
+       let requestBody = {};
 
-if (platform === 'youtube') bodyKey = 'videoUrl';
-if (platform === 'instagram') bodyKey = 'postUrl';
-if (platform === 'facebook') bodyKey = 'postUrl';
-if (platform === 'linkedin') bodyKey = 'postUrl';
-if (platform === 'twitter') bodyKey = 'tweetUrl';
-        
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ [bodyKey]: videoUrl }),
+if (platform === 'youtube') requestBody = { videoUrl: videoUrl };
+if (platform === 'instagram') requestBody = { postUrl: videoUrl };
+if (platform === 'facebook') requestBody = { postUrl: videoUrl };
+if (platform === 'linkedin') requestBody = { postUrl: videoUrl };
+if (platform === 'twitter') requestBody = { tweetUrl: videoUrl };
+
+const response = await fetch(endpoint, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(requestBody),
+});
         });
 
         const data = await response.json();
