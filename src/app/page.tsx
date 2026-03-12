@@ -1232,10 +1232,32 @@ if (platform === 'facebook') requestBody = { postUrl: videoUrl };
 if (platform === 'linkedin') requestBody = { postUrl: videoUrl };
 if (platform === 'twitter') requestBody = { tweetUrl: videoUrl };
 
+let bodyData = {};
+
+if (platform === 'youtube') {
+  bodyData = { videoUrl: videoUrl };
+}
+
+if (platform === 'instagram') {
+  bodyData = { postUrl: videoUrl };
+}
+
+if (platform === 'facebook') {
+  bodyData = { postUrl: videoUrl };
+}
+
+if (platform === 'linkedin') {
+  bodyData = { postUrl: videoUrl };
+}
+
+if (platform === 'twitter') {
+  bodyData = { tweetUrl: videoUrl };
+}
+
 const response = await fetch(endpoint, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(requestBody),
+  body: JSON.stringify(bodyData),
 });
         });
 
