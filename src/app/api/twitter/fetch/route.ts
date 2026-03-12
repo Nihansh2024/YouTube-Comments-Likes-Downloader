@@ -5,8 +5,15 @@ export async function POST(req: Request) {
   try {
 
     const body = await req.json()
-    const tweetUrl = body.tweetUrl
 
+const tweetUrl =
+  body.tweetUrl ||
+  body.postUrl ||
+  body.videoUrl
+    
+if (!tweetUrl) {
+  return Response.json({ error: "Tweet URL missing" }, { status: 400 })
+}
     if (!tweetUrl) {
       return NextResponse.json({ error: "Tweet URL missing" }, { status: 400 })
     }
