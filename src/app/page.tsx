@@ -1215,7 +1215,15 @@ export default function CommentFlowApp() {
       setLoading(true);
       setComments([]);
       setVideoInfo(null);
+useEffect(() => {
+  const interval = setInterval(() => {
+    if (videoUrl) {
+      handleFetchComments();
+    }
+  }, 15000);
 
+  return () => clearInterval(interval);
+}, [videoUrl, platform]);
       try {
         let endpoint = '';
 
