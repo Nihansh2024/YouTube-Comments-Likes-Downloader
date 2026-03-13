@@ -14,7 +14,7 @@ import {
   Youtube, Download, Search, Star, Zap, Shield, Globe, ChevronRight, 
   FileSpreadsheet, FileText, Play, Users, ArrowRight, Menu, X,
   LogOut, BarChart3, Crown, Check, Clock, TrendingUp, MessageSquare,
-  Database, Settings, Sparkles, Target, Award, UserCheck, Instagram,
+  Database, Settings, Sparkles, Target, Award, UserCheck,
   Facebook, Linkedin, Twitter
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -349,7 +349,7 @@ export default function CommentFlowApp() {
               <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
                 <li>• Email address (for account creation)</li>
                 <li>• Usage statistics (download counts, preferences)</li>
-                <li>• API keys (for YouTube/Instagram integration)</li>
+                <li>• API keys (for YouTube integration)</li>
               </ul>
             </div>
             <div className="card-3d glass-card p-6">
@@ -394,7 +394,7 @@ export default function CommentFlowApp() {
               <h3 className="text-lg font-bold gradient-text-vibrant mb-3">3. User Responsibilities</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li>• Use the service lawfully</li>
-                <li>• Respect YouTube and Instagram terms</li>
+                <li>• Respect YouTube terms</li>
                 <li>• Do not attempt to overload our servers</li>
                 <li>• Do not use for spam or harassment</li>
               </ul>
@@ -529,12 +529,12 @@ export default function CommentFlowApp() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold mb-8 leading-tight animate-fade-in-up">
-            <span className="block">Download YouTube & Instagram Comments</span>
+            <span className="block">Download YouTube Comments</span>
             <span className="gradient-text-vibrant block mt-2">Free, Fast & Unlimited</span>
           </h1>
           
           <p className="text-xl sm:text-2xl text-muted-foreground max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up">
-            Extract, analyze, and export <strong>YouTube</strong> and <strong>Instagram</strong> comments to <strong>CSV</strong> or <strong>Excel</strong> in seconds. 
+            Extract, analyze, and export <strong>YouTube</strong> comments to <strong>CSV</strong> or <strong>Excel</strong> in seconds. 
             The most powerful <em>free comment downloader</em> trusted by 50,000+ creators, marketers, and researchers.
           </p>
           
@@ -630,7 +630,7 @@ export default function CommentFlowApp() {
               Why Choose <span className="gradient-text-vibrant">CommentFlow</span>?
             </h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              The most comprehensive YouTube and Instagram comment extraction tool with powerful features designed for creators, marketers, and researchers.
+              The most comprehensive YouTube comment extraction tool with powerful features designed for creators, marketers, and researchers.
             </p>
           </div>
           
@@ -1192,7 +1192,7 @@ export default function CommentFlowApp() {
   return () => clearInterval(interval)
 
 }, [])
-    const [platform, setPlatform] = useState<'youtube' | 'instagram' | 'facebook' | 'linkedin' | 'twitter'>('youtube');
+    const [platform, setPlatform] = useState<'youtube'>('youtube');
     const [videoUrl, setVideoUrl] = useState('');
     const [comments, setComments] = useState<Comment[]>([]);
     const [videoInfo, setVideoInfo] = useState<VideoInfo | null>(null);
@@ -1246,23 +1246,8 @@ export default function CommentFlowApp() {
   setPlatform("youtube")
 }
 
-if (videoUrl.includes("instagram.com")) {
-  setPlatform("instagram")
-}
-
-if (videoUrl.includes("facebook.com")) {
-  setPlatform("facebook")
-}
-
-if (videoUrl.includes("linkedin.com")) {
-  setPlatform("linkedin")
-}
-
-if (videoUrl.includes("twitter.com") || videoUrl.includes("x.com")) {
-  setPlatform("twitter")
-}
       if (!videoUrl.trim()) {
-        toast.error(`Please enter a ${platform === 'youtube' ? 'YouTube' : 'Instagram'} URL`);
+        toast.error(`Please enter a ${platform === 'youtube' ? 'YouTube'} URL`);
         return;
       }
 
@@ -1282,38 +1267,16 @@ useEffect(() => {
         let endpoint = '';
 
 if (platform === 'youtube') endpoint = '/api/youtube/fetch';
-if (platform === 'instagram') endpoint = '/api/instagram/fetch';
-if (platform === 'facebook') endpoint = '/api/facebook/fetch';
-if (platform === 'linkedin') endpoint = '/api/linkedin/fetch';
-if (platform === 'twitter') endpoint = '/api/twitter/fetch';
+
      let requestBody = {};
 
 if (platform === 'youtube') requestBody = { videoUrl: videoUrl };
-if (platform === 'instagram') requestBody = { postUrl: videoUrl };
-if (platform === 'facebook') requestBody = { postUrl: videoUrl };
-if (platform === 'linkedin') requestBody = { postUrl: videoUrl };
-if (platform === 'twitter') requestBody = { tweetUrl: videoUrl };
+
 
 let bodyData = {};
 
 if (platform === 'youtube') {
   bodyData = { videoUrl: videoUrl };
-}
-
-if (platform === 'instagram') {
-  bodyData = { postUrl: videoUrl };
-}
-
-if (platform === 'facebook') {
-  bodyData = { postUrl: videoUrl };
-}
-
-if (platform === 'linkedin') {
-  bodyData = { postUrl: videoUrl };
-}
-
-if (platform === 'twitter') {
-  bodyData = { tweetUrl: videoUrl };
 }
 
 const response = await fetch(endpoint, {
@@ -1350,10 +1313,6 @@ const response = await fetch(endpoint, {
         let endpoint = '';
 
 if (platform === 'youtube') endpoint = '/api/youtube/download';
-if (platform === 'instagram') endpoint = '/api/instagram/download';
-if (platform === 'facebook') endpoint = '/api/facebook/download';
-if (platform === 'linkedin') endpoint = '/api/linkedin/download';
-if (platform === 'twitter') endpoint = '/api/twitter/download';
         
         const response = await fetch(endpoint, {
           method: 'POST',
@@ -1417,7 +1376,7 @@ if (platform === 'twitter') endpoint = '/api/twitter/download';
             <h1 className="text-3xl font-bold mb-2">
               <span className="gradient-text-vibrant">Dashboard</span>
             </h1>
-            <p className="text-muted-foreground">Extract comments from YouTube & Instagram</p>
+            <p className="text-muted-foreground">Extract comments from YouTube</p>
           </div>
 
           {/* Stats Cards */}
@@ -1491,51 +1450,20 @@ if (platform === 'twitter') endpoint = '/api/twitter/download';
               <Youtube className="w-4 h-4" />
               YouTube
             </Button>
-            <Button
-              variant={platform === 'instagram' ? 'default' : 'outline'}
-              onClick={() => { setPlatform('instagram'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
-              className={`flex items-center gap-2 ${platform === 'instagram' ? 'btn-3d' : ''}`}
-            >
-              <Instagram className="w-4 h-4" />
-              Instagram
-            </Button>
-              <Button
-    variant={platform === 'facebook' ? 'default' : 'outline'}
-    onClick={() => { setPlatform('facebook'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
-    className={`flex items-center gap-2 ${platform === 'facebook' ? 'btn-3d' : ''}`}
-  >
-    Facebook
-  </Button>
-
-  <Button
-    variant={platform === 'linkedin' ? 'default' : 'outline'}
-    onClick={() => { setPlatform('linkedin'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
-    className={`flex items-center gap-2 ${platform === 'linkedin' ? 'btn-3d' : ''}`}
-  >
-    LinkedIn
-  </Button>
-
-  <Button
-    variant={platform === 'twitter' ? 'default' : 'outline'}
-    onClick={() => { setPlatform('twitter'); setVideoUrl(''); setComments([]); setVideoInfo(null); }}
-    className={`flex items-center gap-2 ${platform === 'twitter' ? 'btn-3d' : ''}`}
-  >
-    Twitter
-  </Button>
-          </div>
+          
+           </div>
 
           {/* Main Content Card */}
           <div className="card-3d glass-card p-6 md:p-8 mb-8 animate-fade-in-up">
             <div className="flex items-center gap-3 mb-6">
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${platform === 'youtube' ? 'icon-gradient-purple' : 'icon-gradient-pink'}`}>
-                {platform === 'youtube' ? <Youtube className="w-5 h-5 text-white" /> : <Instagram className="w-5 h-5 text-white" />}
+                {platform === 'youtube' ? <Youtube className="w-5 h-5 text-white" />}
               </div>
               <div>
                 <h2 className="text-xl font-bold gradient-text-purple">Extract Comments</h2>
                 <p className="text-sm text-muted-foreground">
                   {platform === 'youtube' 
-                    ? 'Paste a YouTube video URL to extract comments' 
-                    : 'Paste an Instagram post URL to extract comments'}
+                    ? 'Paste a YouTube video URL to extract comments'}
                 </p>
               </div>
             </div>
@@ -1547,14 +1475,7 @@ if (platform === 'twitter') endpoint = '/api/twitter/download';
                  placeholder={
  platform === "youtube"
   ? "https://www.youtube.com/watch?v=..."
-  : platform === "instagram"
-  ? "https://www.instagram.com/p/..."
-  : platform === "facebook"
-  ? "https://www.facebook.com/post/..."
-  : platform === "linkedin"
-  ? "https://www.linkedin.com/posts/..."
-  : "https://twitter.com/status/..."
-}
+ }
                   value={videoUrl}
                   onChange={(e) => setVideoUrl(e.target.value)}
                   className="w-full px-4 py-3 input-3d text-base"
