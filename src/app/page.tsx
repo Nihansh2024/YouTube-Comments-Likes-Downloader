@@ -1207,6 +1207,19 @@ export default function CommentFlowApp() {
     };
 
     const handleFetchComments = async () => {
+      useEffect(() => {
+
+  const interval = setInterval(() => {
+
+    if (platform === "twitter" && videoUrl) {
+      handleFetchComments()
+    }
+
+  }, 10000)
+
+  return () => clearInterval(interval)
+
+}, [platform, videoUrl])
       if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
   setPlatform("youtube")
 }
