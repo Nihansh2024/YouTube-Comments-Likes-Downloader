@@ -14,14 +14,12 @@ const tweetUrl =
 if (!tweetUrl) {
   return Response.json({ error: "Tweet URL missing" }, { status: 400 })
 }
-    if (!tweetUrl) {
-      return NextResponse.json({ error: "Tweet URL missing" }, { status: 400 })
-    }
 
     const tweetId = tweetUrl.split("/status/")[1]?.split("?")[0]
+    const timestamp = Date.now()
 
     const response = await fetch(
-      `https://api.twitter.com/2/tweets/search/recent?query=conversation_id:${tweetId}`,
+      https://api.twitter.com/2/tweets/search/recent?query=conversation_id:${tweetId}&max_results=100&t=${timestamp}
       {
         headers: {
           Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
