@@ -1207,6 +1207,25 @@ export default function CommentFlowApp() {
     };
 
     const handleFetchComments = async () => {
+      if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+  setPlatform("youtube")
+}
+
+if (videoUrl.includes("instagram.com")) {
+  setPlatform("instagram")
+}
+
+if (videoUrl.includes("facebook.com")) {
+  setPlatform("facebook")
+}
+
+if (videoUrl.includes("linkedin.com")) {
+  setPlatform("linkedin")
+}
+
+if (videoUrl.includes("twitter.com") || videoUrl.includes("x.com")) {
+  setPlatform("twitter")
+}
       if (!videoUrl.trim()) {
         toast.error(`Please enter a ${platform === 'youtube' ? 'YouTube' : 'Instagram'} URL`);
         return;
