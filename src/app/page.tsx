@@ -1452,7 +1452,6 @@ if (platform === 'youtube') endpoint = '/api/youtube/download';
             </Button>
           
            </div>
-
           {/* Main Content Card */}
           <div className="card-3d glass-card p-6 md:p-8 mb-8 animate-fade-in-up">
             <div className="flex items-center gap-3 mb-6">
