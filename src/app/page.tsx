@@ -1183,6 +1183,15 @@ export default function CommentFlowApp() {
 
   // Dashboard Page
   const DashboardPage = () => {
+    useEffect(() => {
+
+  const interval = setInterval(() => {
+    handleFetchComments()
+  }, 3000)
+
+  return () => clearInterval(interval)
+
+}, [])
     const [platform, setPlatform] = useState<'youtube' | 'instagram' | 'facebook' | 'linkedin' | 'twitter'>('youtube');
     const [videoUrl, setVideoUrl] = useState('');
     const [comments, setComments] = useState<Comment[]>([]);
