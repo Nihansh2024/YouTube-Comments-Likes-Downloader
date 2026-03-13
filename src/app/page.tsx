@@ -15,7 +15,6 @@ import {
   FileSpreadsheet, FileText, Play, Users, ArrowRight, Menu, X,
   LogOut, BarChart3, Crown, Check, Clock, TrendingUp, MessageSquare,
   Database, Settings, Sparkles, Target, Award, UserCheck,
-  Facebook, Linkedin, Twitter
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { toast } from 'sonner';
@@ -199,12 +198,6 @@ export default function CommentFlowApp() {
                   <h4 className="font-semibold">Top 10 Uses for Exported Comment Data</h4>
                   <p className="text-sm text-muted-foreground mt-1">Discover creative ways to leverage comment data for your business.</p>
                   <span className="text-xs text-violet-600">Jan 10, 2024 • 6 min read</span>
-                </div>
-                <div className="border-l-4 border-pink-500 pl-4">
-                  <h4 className="font-semibold">Instagram Comment Marketing: Complete Guide 2024</h4>
-                  <p className="text-sm text-muted-foreground mt-1">Master Instagram engagement with our comprehensive guide.</p>
-                  <span className="text-xs text-violet-600">Jan 5, 2024 • 12 min read</span>
-                </div>
               </div>
             </div>
             <div className="card-3d glass-card p-6">
@@ -244,17 +237,7 @@ export default function CommentFlowApp() {
                 <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
                   <Badge className="bg-blue-500 text-white">POST</Badge>
                   <code className="text-sm">/api/youtube/download</code>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                  <Badge className="bg-green-500 text-white">POST</Badge>
-                  <code className="text-sm">/api/instagram/fetch</code>
-                </div>
-                <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                  <Badge className="bg-blue-500 text-white">POST</Badge>
-                  <code className="text-sm">/api/instagram/download</code>
-                </div>
               </div>
-            </div>
             <div className="card-3d glass-card p-6">
               <h3 className="text-lg font-bold gradient-text-vibrant mb-3">Rate Limits</h3>
               <p className="text-sm text-muted-foreground">Free tier: 100 requests/day. Contact us for higher limits.</p>
@@ -273,8 +256,7 @@ export default function CommentFlowApp() {
                 {[
                   { q: 'How do I download YouTube comments?', a: 'Simply paste a YouTube URL, click "Fetch Comments", then download as CSV or Excel.' },
                   { q: 'Is CommentFlow really free?', a: 'Yes! CommentFlow is 100% free with unlimited downloads.' },
-                  { q: 'Can I download Instagram comments?', a: 'Yes! Switch to the Instagram tab and paste any Instagram post URL.' },
-                  { q: 'What formats are supported?', a: 'We support CSV and Excel (XLSX) formats for export.' },
+                 { q: 'What formats are supported?', a: 'We support CSV and Excel (XLSX) formats for export.' },
                 ].map((item, i) => (
                   <div key={i} className="border-b border-border pb-3 last:border-0">
                     <h4 className="font-semibold text-primary">{item.q}</h4>
